@@ -7,9 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dismiss Approvals
-        run: gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
         env:
           GH_TOKEN: ${{ github.token }}
+        run:  |
+          gh api repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews \
+          --jq '.[] | select(.state == "APPROVED") | .id' \
+          | xargs -I '{}' gh api --method=PUT -f message="Dismissed due to PR edit." \
+          repos/${{ github.repository }}/pulls/${{ github.event.number }}/reviews/'{}'/dismissals
 
   lint:
     runs-on: ubuntu-latest
