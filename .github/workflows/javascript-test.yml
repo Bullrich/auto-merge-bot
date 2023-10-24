@@ -1,10 +1,18 @@
 name: Continuous testing
 
-on: [pull_request]
+on: 
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - review_requested
+      - review_request_removed
+      - ready_for_review
 
 jobs:
   dismiss-reviews:
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'synchronize' }}
     runs-on: ubuntu-latest
     steps:
       - name: Dismiss Approvals
