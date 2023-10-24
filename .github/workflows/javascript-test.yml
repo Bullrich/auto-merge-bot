@@ -3,6 +3,14 @@ name: Continuous testing
 on: [pull_request]
 
 jobs:
+  dismiss-reviews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dismiss Approvals
+        run: gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews --jq '.[] | [.id,.state] | join("=")' | grep -Po '\d+(?=\=APPROVED)' | xargs -I '@(review_id)' gh api repos/${{ github.event.repo.name }}/pulls/${{ github.event.number }}/reviews/@(review_id)/dismissals
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   lint:
     runs-on: ubuntu-latest
     steps:
