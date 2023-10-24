@@ -4,6 +4,7 @@ on: [pull_request]
 
 jobs:
   dismiss-reviews:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - name: Dismiss Approvals
