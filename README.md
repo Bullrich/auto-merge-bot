@@ -2,6 +2,8 @@
 
 Bot which enables or disable [`auto-merge`](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request) in a repository.
 
+THIS IS A CHANGE
+
 ## Why?
 
 This action was developed to help external parties merge their own Pull Requests.
